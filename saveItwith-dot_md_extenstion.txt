@@ -1,0 +1,144 @@
+BDD Cucumber Test Automation Instructions (Java + Selenium + POM)
+=================================================================
+
+Goal:
+-----
+Automate one core scenario from the application:
+URL: 
+
+1. Exploration Phase 🕵️‍♂️
+-------------------------
+- Familiarize yourself with the Admin Panel application.
+- Understand the login flow and the Supplement tab functionality.
+- Identify the page structure and elements using browser developer tools.
+- Review the Object Repository file to understand how locators are structured.
+- Analyze the page structure, element locators, and interactions.
+- Ensure you have access to the "ObjectRepository.properties" file and "testData.json" for locators and test data.
+- Review the provided "utilities.java" for utility methods that will be used in step definitions.
+- Ensure you have the necessary dependencies in your Maven project for Selenium, Cucumber, and TestNG/JUnit.
+- Understand the Gherkin syntax for writing Cucumber feature files.
+  
+
+2. Test Design Phase 📝
+-----------------------
+Framework Guidelines:
+- BDD with Cucumber (Gherkin syntax)
+- Java + Selenium WebDriver
+- Use Maven for build management (assumed pre-configured)
+- Use Explicit Waits for element interactions
+- Use the provided "ObjectRepository.properties" for locators
+- Use the provided "testData.json" for test data
+- Implement Cucumber Step Definitions in the `stepDefinitions` package
+- Maintain Cucumber feature files in the `/features` folder
+- Use the `utilities.java` for utility methods
+- Follow Java best practices for code structure and readability
+- Ensure modularity and reusability of code
+- Use meaningful names for methods and variables
+- Implement proper error handling and logging
+- Use Extent Reports or Cucumber Reports for test execution reporting
+- Ensure the test is robust and can handle minor UI changes without breaking
+- Ensure the test is modular and can be extended for future scenarios
+- Use the provided folder structure for organizing your code and resources
+- Use the provided `ApplicationName.feature` file as a template for your test case
+
+Folder Structure Example:
+src
+├── main
+│   └── java
+│       └── Utilities
+│           └── utilities.java
+├── test
+│   └── java
+│       ├── stepDefinitions
+│       │   ├── ApplicationNameSteps.java
+│       └── runners
+│           └── TestRunner.java
+features
+└── ApplicationName.feature
+resources
+├── testData
+│   └── testData.json 
+└── ObjectRepository
+    └── ObjectRepository.properties
+
+
+Requirements for Test Case Implementation:
+- Core Scenario: Consider the scenario of verifying that a user cannot proceed with empty mandatory fields in the Add Supplement window."
+- Implement Cucumber Step Definitions in stepDefinitions package
+- Maintain Cucumber feature file in /features folder with Gherkin language
+- Use proper waits (Explicit Waits), specific locators (XPath, CSS Selectors, etc.)
+- The code must:
+   - Load the properties file "ObjectRepository.properties", analyse and understand the structure of pages and page elements.
+   - Use these locators to find elements.
+   - Do not hardcode locators in the step definitions.
+- Use "testData.json" file for test data, which should be placed in the /resources folder.
+- "utilities.java" should contain the definitions of methods being called in the step definitions.
+
+Sample Feature File (ApplicationName.feature):
+Feature: ApplicationName
+
+  Scenario Outline: Verify that user cannot proceed with empty mandatory fields in Add Supplement window
+    Given The user launches the Admin Panel application "<FileName>" "<Scenarios>"
+    When User enters valid username and clicks next button
+    And User enters valid password and clicks on Login button
+    Then User should land on Market Management Page
+    When The user navigates to the Supplement tab
+    And The user clicks on the market dropdown and selects the market from the list of markets available in the dropdown
+    And The user clicks on the Locale drop-down and selects the locale from the list of markets available in the dropdown
+    And The user clicks on add supplement button on supplement page
+    And Add supplement window should be displayed in a new dialog box
+    And The user leaves all mandatory input fields empty and clicks on the NEXT button
+    Then The user should not proceed to the next window of add supplement
+    And All input fields should display mandatory field message in red
+
+    Examples:
+      | FileName              | Scenarios    |
+      | testData | TC16983_01   |
+
+  - "TC16983_01" is a sample test case ID that should be defined in the "testData.json" file.
+
+Additional Locator Usage Requirements:
+-------------------------------------
+- All element locators in the automation code must reference only the exact locator names as defined in the ObjectRepository.properties file.
+- Do not invent, assume, or create new locator keys in the code. Only use keys that are present in the ObjectRepository.properties file.
+- If a locator needs to be changed or added, update the ObjectRepository.properties file, not the Java code.
+- Utility methods (e.g., in utilities.java) must fetch locators using the provided key names and a helper method that parses the locator type (xpath, id, css, etc.).
+- No hardcoded selectors or XPaths are allowed in the Java code. All element lookups must go through the object repository.
+
+3. Execution Phase ▶️
+----------------------
+- Execute the test using TestNG Cucumber Runner
+- Run with Maven command:
+  mvn test or mvn clean test
+- Ensure the test runs without errors
+- Debug and fix any failures
+
+4. Test Report 📋
+-----------------
+Deliverables:
+- HTML Test Execution Report (Use Extent Reports or Cucumber Reports)
+- Plain Text Execution Log File
+  Should include:
+  - Steps executed
+  - Test data used
+  - Actual Result of each step
+- Any errors or exceptions encountered
+- Screenshots of failed steps (if applicable)
+- Ensure the report is clear and easy to understand
+- Ensure the report is generated in the target folder after execution
+
+5. Evaluation Parameters (Score 0-100 each) 🎯
+----------------------------------------------
+| Metric                          | Description                                                                                      |
+|---------------------------------|--------------------------------------------------------------------------------------------------|
+| Correctness                     | Does the test validate the intended business scenario end-to-end without logical bugs?          |
+| Code Structure                  | Follows Java best practices, proper class/method separation, clean code, proper POM structure    |
+| Execution Reliability           | Runs without errors, stable, no dependency/missing file issues                                   |
+| Error Handling and Robustness   | Meaningful error messages, proper exception handling, retries/waits where necessary             |
+| Reusability                     | Modular, easy to extend for new scenarios, follows DRY (Don’t Repeat Yourself) principle         |
+| Efficiency                      | Optimized for performance (reduced waits, minimal hard-coded sleeps, efficient locator strategy) |
+
+Final Note:
+-----------
+Focus on clarity, reusability, and maintainability while designing the automation script.
+Ensure the test is robust and can handle minor changes in the UI without breaking. Use meaningful names for methods and variables to enhance readability.
